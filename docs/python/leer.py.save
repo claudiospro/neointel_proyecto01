@@ -1,0 +1,19 @@
+from openpyxl import load_workbook
+wb = load_workbook('tmp/leer.xlsx') 
+ws = wb.active
+
+print '';
+print '';
+print '';
+print '';
+print '';
+print '';
+print '';
+
+i  = 8428
+for row in ws.rows:
+    for cell in row:
+        v = cell.value.replace("'", "\\'")
+        s = u"('%s', 4, 5, 44)," %(v)
+        print s
+        i+=1

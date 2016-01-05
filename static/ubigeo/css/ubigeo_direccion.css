@@ -1,0 +1,11 @@
+thead td.th , th {
+    text-align: center!important;
+    padding: 0!important;
+}
+td, th {
+    border: 1px solid;
+}
+
+.ui-autocomplete {
+    z-index: 9999;
+}

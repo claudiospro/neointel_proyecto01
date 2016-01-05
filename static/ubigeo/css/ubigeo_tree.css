@@ -1,0 +1,27 @@
+ ol {
+     padding: 0 .4em 0 0;
+ }
+
+ ol ol ol ol {
+     background-color: #B1B1B1;
+ }
+ ol a.list {
+     color: black;
+ }
+ ol a.list:hover {
+     color: #3C3C3C;
+ }
+ ol a.list.active {
+     color: green;
+ }
+ span{
+     color: rgb(205, 205, 205); font-size: 0.8em;
+ }
+ li.close {
+     line-height: 1em;
+     list-style: outside none none;
+     text-align: right;
+ }
+ li.close a {
+     color:red;
+ }

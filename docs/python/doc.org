@@ -1,0 +1,209 @@
+* page
+  - https://openpyxl.readthedocs.org/en/default/
+    sudo apt-get -y install python-pip
+    sudo pip install openpyxl
+
+* tutorial
+** Manipulando un workbook en memoria
+*** creando un workbook
+    - No hay necesidad de crear un archivo en el sistema de archivos
+      para empezar con openpyxl, Sólo tiene que importar la clase
+      WORKBOOK y empesar a usarlo [[file:code01.py][code01]]
+    - Un WORKBOOK es creado siempree con al menos un WORKSHEET. Se
+      puede conseguir mediante  el uso de la propiedad
+      openpyxl.workbook.Workbook.active() [[file:code02.py][code02]]
+    - NOTA
+      la funcion usa la propiedad _active_sheet_index, por defecto es
+      0 A menos que usted modifica su valor, siempre obtendrá la
+         primera hoja de cálculo utilizando este método.
+    - También puede crear nuevo WORKSHEETS mediante el uso del metodo
+      openpyxl.workbook.Workbook.create_sheet()) [[file:code03.py][code03]]
+    - Los SHEETS (hojas) se les da un nombre automáticamente cuando se
+      crean. Etan enumerados en secuencia (Hoja, Hoja1, Hoja2, ...)
+      Puede cambiar este nombre en cualquier momento con la propiedad
+      del título: [[file:code04.py][code04]]
+    - El color de fondo de la pestaña del título es de color blanco
+      por defecto. Podemops cambiar proporcionadon un codigo de color
+      RRGGBB con la propiedad: sheet_properties.tabColor [[file:code05.py][code05]]
+    - una ves estalecido un nombre al WORKSHEET, podemos usarlo como
+      indice en el workbook o usando el metodo
+      openpyxl.workbook.Workbook.get_sheet_by_name() [[file:code06.py][code06]] 
+    - podemos veer los nombres de los WORKSHEETS de el WORKBOOK con el
+      metodo openpyxl.workbook.Workbook.get_sheet_names() [[file:code07.py][code07]]
+    - podemos recorrer WORKSHEETS atraves de un bucle [[file:code08.py][code08]]
+      
+*** jugando con la data
+**** accediendo a una celda
+     - ahora sabremos como acceder a un WORKSHEET, Podemos empezar a 
+       modificar el contenido de las células.
+     - Las celdas se pueden acceder directamente como claves del
+       WORKSHEET
+       >>> c = ws['A4']
+     - Esto devolverá la celda A4 o crear uno si no existe
+       todavía. Los valores pueden ser asignados directamente
+       >>> ws['A4'] = 4
+     - Existe también el método: openpyxl.worksheet.Worksheet.cell() 
+       >>> c = ws.cell('A4')
+     - También puede acceder a una celda usando la notacion fila y
+       columna
+       >>> d = ws.cell(row = 4, column = 2)
+     - NOTA
+       Cuando un WORKSHEET es creado en memori, no contiene celdas,
+       estos son creados cuando hace el primer acceso. De esta manera
+       no creamos objetos que nunca se puede acceder, reduciendo así
+       el consumo de memoria.
+     - PELIGRO
+       Debido a esta característica, desplazamiento a través de celdas
+       en lugar de acceder directamente creará a todos en la memoria
+       incluso si usted no les asigna un valor.
+       Algo como
+       >>> for i in range(1,101):
+       ...        for j in range(1,101):
+       ...            ws.cell(row = i, column = j)
+       Creará 100x100 celdas en la memoria, para nada.
+       Sin embargo, hay una manera de limpiar todas esas células no
+       deseadas, ya veremos eso más tarde. 
+**** accediendo a varias celdas
+     - Los rangos de celdas se puede acceder mediante slicing 
+       >>> cell_range = ws['A1':'C2']
+     - Tambien puedes usar el metodo
+       openpyxl.worksheet.Worksheet.iter_rows()
+       >>> tuple(ws.iter_rows('A1:C2'))
+       ((<Cell Sheet1.A1>, <Cell Sheet1.B1>, <Cell Sheet1.C1>),
+        (<Cell Sheet1.A2>, <Cell Sheet1.B2>, <Cell Sheet1.C2>))
+       
+       >>> for row in ws.iter_rows('A1:C2'):
+       ...        for cell in row:
+       ...            print cell
+     - si necesitas interar a traves de todas las columnas del
+       archivo , podemos usar la propiedad
+       openpyxl.worksheet.Worksheet.rows()  
+       >>> ws = wb.active
+       >>> ws['C9'] = 'hello world'
+       >>> ws.rows
+     - o la propiedad openpyxl.worksheet.Worksheet.columns() 
+       >>> ws.columns
+**** almacenamiento de datos
+     - Una vez que tenemos un openpyxl.cell.Cell, podemos asignarle un
+       valor:
+       >>> c.value = 'hello, world'
+       >>> print(c.value)
+       >>> d.value = 3.14
+       >>> print(d.value)
+     - También puede activar el tipo y formato de inferencia:
+       >>> wb = Workbook(guess_types=True)
+       >>> c.value = '12%'
+       >>> print(c.value)
+       0.12
+
+       >>> import datetime
+       >>> d.value = datetime.datetime.now()
+       >>> print d.value
+       datetime.datetime(2010, 9, 10, 22, 25, 18)
+
+       >>> c.value = '31.50'
+       >>> print(c.value)
+       31.5       
+** guardando a un archivo
+   - La forma mas simple y mas facil de guardar un WORKBOOK es usando
+     el metodo openpyxl.workbook.Workbook.save() del objeto
+     openpyxl.workbook.Workbook
+     >>> wb = Workbook()
+     >>> wb.save('balances.xlsx')
+   - PELIGRO
+     Esta operación sobrescribirá archivos existentes sin previo
+     aviso.
+   - NOTA
+     La extensión no se ve obligado a ser xlsx o xlsm aunque puede que
+     tengas alguna abrirlo directamente con otra aplicación problemas
+     si no utilizar una extensión oficial.
+     Como los archivos OOXML son basicamente archivos ZIP, también se
+     puede acabar con el nombre de archivo con .zip, y abrirlo coon
+     su administrador de archivos ZIP favoritos
+   - Puede especificar el atributo as_template=True, para guardar el
+     documento como una plantilla 
+     >>> wb = load_workbook('document.xlsx')
+     >>> wb.save('document_template.xltx', as_template=True)
+   - o especificar el atributo as_template=False (por defecto), para
+     guardar la plantilla de documento (o el documento) como documento
+     >>> wb = load_workbook('document_template.xltx')
+     >>> wb.save('document.xlsx', as_template=False)
+     
+     >>> wb = load_workbook('document.xlsx')
+     >>> wb.save('new_document.xlsx', as_template=False)
+   - PELIGRO
+     Usted debe controlar los atributos de datos y extensiones de
+     documento para guardar documentos en las plantillas de documentos
+     y viceversa, de lo contrario el motor de tabla de resultados no
+     puede abrir el documento.
+   - NOTA
+     lo siguiente fallara
+     >>> wb = load_workbook('document.xlsx')
+     >>> # Need to save with the extension *.xlsx
+     >>> wb.save('new_document.xlsm')
+     >>> # MS Excel can't open the document
+     >>>
+     >>> # or
+     >>>
+     >>> # Need specify attribute keep_vba=True
+     >>> wb = load_workbook('document.xlsm')
+     >>> wb.save('new_document.xlsm')
+     >>> # MS Excel can't open the document
+     >>>
+     >>> # or
+     >>>
+     >>> wb = load_workbook('document.xltm', keep_vba=True)
+     >>> # If us need template document, then we need specify extension as *.xltm.
+     >>> # If us need document, then we need specify attribute as_template=False.
+     >>> wb.save('new_document.xlsm', as_template=True)
+     >>> # MS Excel can't open the document
+** leyendo desde un archivo 
+   - De la misma manera como la escritura, puede importar
+     openpyxl.load_workbook() para abrir un libro existente:
+     >>> from openpyxl import load_workbook
+     >>> wb2 = load_workbook('test.xlsx')
+     >>> print wb2.get_sheet_names()
+* uso simple
+** escribir un WORKBOOK 
+   [[file:code09.py][code09]]
+** escribir un WORKBOOK de *.xltx as *.xlsx
+   [[file:code10.py][code10]] 
+** escribir un WORKBOOK de *.xltm as *.xlsm
+   [[file:code11.py][code11]] 
+** leyendo un WORKBOOK existente 
+   [[file:code12.py][code12]] 
+   - NOTA
+     existen varias vanderas que pueden ser usadas con load_workbook.
+     - GUESS_TYPES, cuando abilita o desabilita (por defecto) los
+       tipo de inferencia al leer las celdas
+     - control DATA_ONLY, 
+       - si las celdas formuladas con otras celulas o
+       - el valor almacena la última vez que leyó la hoja de Excel.
+     - control KEEP_VBAsi cualquier elemento Visual Basic es 
+       - preservado
+       - o no (pord defecto)
+     - si hay que preservardo o otodavia no es editable
+   - PELIGRO
+     openpyxl actualmente no tiene todos los elementos posibles en
+     un archivo de Excel para leer las imágenes y los gráficos, se
+     perderán a partir de archivos existentes si se abren y se
+     guardan con el mismo nombre. 
+
+** usando formato de numeros [[file:code13.py][code13]]
+** usando formulas  [[file:code14.py][code14]] 
+   - PELIGRO
+     NB debe utilizar el nombre de Inglés para una función y los
+     argumentos de funciones deben estar separadas por comas y no otra
+     puntuacion como punto y coma.
+   - OPENPYXL nunva evalua la formula pero es posible comprobar el
+     nombre de una fórmula:
+     >>> from openpyxl.utils import FORMULAE
+     >>> "HEX2DEC" in FORMULAE
+     True
+   - Si usted está tratando de utilizar una fórmula que no se sabe que
+     esto podría deberse a que está utilizando una fórmula que no se
+     incluyó en la especificación inicial. Tales fórmulas deben llevar
+     el prefijo xlfn. para trabajo.
+** conbinando / descombinando celdas
+** insertantdo imagenes
+** columans dobles (contorno)
