@@ -6,7 +6,7 @@ include "../../../../lib/html/html.php";
 // include "../../model/classes/ModeloSubimit.php";
 
 // -------------------------------------------------------- INPUT
-$in['sql'] = utf8_decode($_POST['sql']);
+$in['sql'] = utf8_encode($_POST['sql']);
 
 
 // -------------------------------------------------------- MODEL

@@ -61,7 +61,9 @@ include "../autentificacion/menu.php";
     </ul>
     <div class="tabs-content" data-tabs-content="example-tabs">      
       <div class="tabs-panel is-active" id="panel1">
-        <a href="./process/link/excel/fuente_unir_datos_a_y_b_excel_link.php" target="_blank">Excel</a>
+        <?php if(isset($in['campania_id'])): ?>
+          <a href="./process/link/excel/fuente_unir_datos_a_y_b_excel_link.php?campania_id=<?php echo $in['campania_id'] ?>" target="_blank">Excel</a>
+          <?php endif ?>
         <div class="callout secondary">
           <?php
           if ($in['a_y_b']) {

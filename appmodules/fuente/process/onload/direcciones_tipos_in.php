@@ -16,32 +16,32 @@ function imprimir_tabla($data) {
     global $onLoad;
     echo '<table>';
     echo '<tr>';
-    echo '<th>Nombre</th><th>Estado</th>';
+    echo '<th>Nombre</th><th>Estado</th><th>Ejemplo</th>';
     echo '</tr>';
+    $search = array();
     foreach ($data as $row) {
-        $row['estado_str'] = '';
-        if ($row['estado'] == '0') { // no hay: ubigeos
-            $indexar = false;
-            $row['estado_str'] .= 'No existe';
-            $row['estado_str'] .= '<br>';
-            $row['estado_str'] .= '<a target="_black" href="../ubigeo/direcciones.php">Ubigeos</a>';
- 
-        } elseif ($row['estado'] == '1') { // todo esta bien
-            $row['estado_str'] .= 'OK';
-        } else { // que mal, ubigeo
-            $indexar = false;
-            $row['estado_str'] .= 'Redundante';
-            $row['estado_str'] .= '<br>';
-            $row['estado_str'] .= '<a target="_black" href="../ubigeo/direcciones.php">Ubigeos</a>';
+        if (array_search($row['nombre'], $search) === False) {
+            $search[] = $row['nombre'];
+            $row['estado_str'] = '';
+            if ($row['estado'] == '0') { // no hay: ubigeos
+                $indexar = false;
+                $row['estado_str'] .= 'No existe';
+                $row['estado_str'] .= '<br>'; 
+            } elseif ($row['estado'] == '1') { // todo esta bien
+                $row['estado_str'] .= 'OK';
+            } else { // que mal, ubigeo
+                $indexar = false;
+                $row['estado_str'] .= 'Redundante';
+                $row['estado_str'] .= '<br>';
+                $row['estado_str'] .= '';
+            }
+            echo '<tr>';
+            echo '<td>' . utf8_encode($row['nombre']) . '</td>';
+            echo '<td>' . $row['estado_str'] . '</td>';
+            echo '<td style="color: rgb(164, 164, 164); font-size: 0.8em;">' . utf8_decode($row['nombre']) . ' ' . utf8_encode($row['direccion']) . ', ' . utf8_encode($row['ubigeo']) . '</td>';
+            echo '</tr>';
         }
-        echo '<tr>';
-        echo '<td>';
-        echo utf8_decode($row['nombre']);
-        echo '</td>';
-        echo '<td>';
-        echo $row['estado_str'];
-        echo '</td>';        
-        echo '</tr>';
+
     }
     echo '</table>';
     return $indexar;

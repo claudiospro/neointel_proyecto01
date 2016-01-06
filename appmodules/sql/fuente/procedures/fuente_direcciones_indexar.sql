@@ -18,12 +18,12 @@ BEGIN
   (SELECT fa.direccion_nombre nombre, d.id, d.sinonimo_id
   FROM fuente_a fa
   LEFT JOIN ubigeo_direccion d ON LOWER(d.nombre)=LOWER(fa.direccion_nombre)
-  WHERE fa.campania_id=1)  
+  WHERE fa.campania_id=1 AND fa.direccion_id=0)  
   UNION
   (SELECT fb.direccion_nombre nombre, d.id, d.sinonimo_id
   FROM fuente_b fb
   LEFT JOIN ubigeo_direccion d ON LOWER(d.nombre)=LOWER(fb.direccion_nombre)
-  WHERE fb.campania_id=1)
+  WHERE fb.campania_id=1 AND fb.direccion_id=0)
   ) unido
   ;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;

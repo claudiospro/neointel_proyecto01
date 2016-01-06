@@ -36,7 +36,8 @@ include "../autentificacion/menu.php";
       <label class="">Campañia</label>
     </div>
     <div class="large-2 columns text-right">
-      <a href="https://www.google.es/maps/" target="_blank">Google Maps</a>
+      <a href="https://www.google.es/maps/" target="_blank">Google Maps</a> |
+      <a href="../ubigeo/tree2.php" target="_blank">Ubigeo</a>
     </div>
   </div>
   <div class="row">
@@ -62,9 +63,10 @@ include "../autentificacion/menu.php";
   <div class="large-12 columns">
     <div class="callout secondary">
       <?php
-      $indexar = false;
+      $obj = new dd();
       if ($in['data']) {
-          $indexar = imprimir_tabla($in['data']);
+          $indexar = $obj->imprimir_tabla($in['data']);
+          // Html::printr($in['data']);
       }
       ?>
     </div>
@@ -73,12 +75,13 @@ include "../autentificacion/menu.php";
 
 <div class="row">
   <div class="large-12 columns text-center">
-    <?php if ($indexar) {
+    <?php
+    if ($obj->indexar == '1') {
         indexar();
         echo '<div class="callout success">
                   Indexado
               </div>';
-    } 
+    }
     ?>
   </div>
 </div>

@@ -18,10 +18,12 @@ BEGIN
     SELECT DISTINCT a.direccion_tipo_nombre nombre, t.id tipo_id, sinonimo_id  FROM fuente_a a
     LEFT JOIN ubigeo_direccion_tipo t ON LOWER(t.nombre)=LOWER(a.direccion_tipo_nombre)
     WHERE a.campania_id = in_compania_id
+      AND a.direccion_tipo_id = 0
     UNION
     SELECT DISTINCT b.direccion_tipo_nombre nombre, t.id tipo_id, sinonimo_id FROM fuente_b b
     LEFT JOIN ubigeo_direccion_tipo t ON LOWER(t.nombre)=LOWER(b.direccion_tipo_nombre)
     WHERE b.campania_id = in_compania_id
+      AND b.direccion_tipo_id = 0
   ) unido
   ;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;

@@ -1,5 +1,27 @@
 <?php
 
+include "../../../../../lib/mysql/dbconnector.php";
+include "../../../../../lib/mysql/utilidades.php";
+include "../../../../../lib/mysql/conexion01.php";
+include "../../../model/classes/ModeloOnload.php";
+
+function num_to_letters($num, $uppercase = true) {
+    $letters = '';
+    while ($num > 0) {
+        $code = ($num % 26 == 0) ? 26 : $num % 26;
+        $letters .= chr($code + 64);
+        $num = ($num - $code) / 26;
+    }
+    return ($uppercase) ? strtoupper(strrev($letters)) : strrev($letters);
+}
+
+$onLoad = new ModeloOnload();
+$in['campania_id'] = $_GET['campania_id'];
+$in['tipo'] = 'a_y_b';
+$data = $onLoad->getDataUnida($in);
+
+
+
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE);
@@ -20,19 +42,18 @@ $objPHPExcel->getProperties()->setCreator("Claudio Rodriguez Ore");
 
 
 // Add some data
-$objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Hello')
-            ->setCellValue('B2', 'world!')
-            ->setCellValue('C1', 'Hello')
-            ->setCellValue('D2', 'world!');
-
-// Miscellaneous glyphs, UTF-8
-$objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A4', 'Miscellaneous glyphs')
-            ->setCellValue('A5', 'éàèùâêîôûëïüÿäöüç');
+$t = count($data);
+for ($i=2; $i<=$t; $i++) {
+    $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $i, utf8_encode($data[$i-1]['ubigeo_nombre']))
+                ->setCellValue('B' . $i, utf8_encode($data[$i-1]['direccion_tipo_nombre'] . ' ' . $data[$i-1]['direccion_nombre']))
+                ->setCellValue('C' . $i, utf8_encode($data[$i-1]['direccion_numero']))
+                ->setCellValue('D' . $i, utf8_encode($data[$i-1]['telefono']))
+        ;
+}
 
 // Rename worksheet
-$objPHPExcel->getActiveSheet()->setTitle('Simple');
+$objPHPExcel->getActiveSheet()->setTitle('Data');
 
 
 // Set active sheet index to the first sheet, so Excel opens this as the first sheet

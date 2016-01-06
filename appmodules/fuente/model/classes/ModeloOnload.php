@@ -39,8 +39,10 @@ WHERE LOWER(s.nombre) = LOWER("' . $nombre . '")
     function getUbigeos4Ubigeo($nombre) {
         $this->q->fields = array('ubigeo' => '');
         $this->q->sql = '
-SELECT u.nombre FROM ubigeo_sinonimo s 
+SELECT CONCAT(a.nombre, "->", p.nombre, "->", u.nombre) FROM ubigeo_sinonimo s 
 LEFT JOIN ubigeo u ON u.id = s.ubigeo_id
+LEFT JOIN ubigeo p ON p.id = u.parent_id
+LEFT JOIN ubigeo a ON a.id = p.parent_id
 WHERE LOWER(s.nombre) = LOWER("' . $nombre . '")
         ';
         // print $this->q->sql;
@@ -65,15 +67,15 @@ CALL fuente_ubigeo_indexar(
     }
     //
     function getDireccionTipoFuente($in) {
-        $this->q->fields = array('nombre' => '', 'estado' => '');
+        $this->q->fields = array('nombre' => '', 'direccion' => '', 'ubigeo' => '',  'estado' => '');
         $this->q->sql = '
-SELECT DISTINCT unido.nombre , 
+SELECT DISTINCT unido.* , 
        (SELECT COUNT(dt.id) FROM ubigeo_direccion_tipo dt WHERE LOWER(dt.nombre) =LOWER(unido.nombre) ) estado
 FROM(
-SELECT DISTINCT direccion_tipo_nombre nombre FROM fuente_a
+SELECT DISTINCT direccion_tipo_nombre nombre, direccion_nombre, ubigeo_localidad_nombre FROM fuente_a
 WHERE campania_id = "' . $in['campania_id'] . '"
 UNION
-SELECT DISTINCT direccion_tipo_nombre nombre FROM fuente_b
+SELECT DISTINCT direccion_tipo_nombre nombre, direccion_nombre, ubigeo_ciudad_nombre FROM fuente_b
 WHERE campania_id = "' . $in['campania_id'] . '"
 ) unido
         ';

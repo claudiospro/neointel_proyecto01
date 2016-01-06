@@ -259,6 +259,10 @@ function sanear_string($string) {
         array('c', 'C'),
         $string
     );
-
+    $string = str_replace(
+        array('Ð', 'ð'),
+        array('Ñ', 'ñ'),
+        $string
+    );
     return $string;
 }

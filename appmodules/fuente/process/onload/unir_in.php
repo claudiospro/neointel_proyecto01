@@ -33,7 +33,7 @@ function imprimir_tabla_a_y_b($data) {
         echo '<tr>';
         echo '<td>' . utf8_encode($row['ubigeo_nombre']) . '</td>';
         echo '<td>';
-        echo '<span>' . utf8_encode($row['direccion_tipo_nombre']) . '</span>';
+        echo '<span>' . utf8_encode($row['direccion_tipo_nombre']) . '</span> ';
         echo '<span>' . utf8_encode($row['direccion_nombre']) . '</span>';
         echo '</td>';
         echo '<td>' . utf8_encode($row['direccion_numero']) . '</td>';

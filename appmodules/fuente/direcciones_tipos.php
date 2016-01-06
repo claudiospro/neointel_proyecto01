@@ -32,8 +32,12 @@ include "../autentificacion/menu.php";
 
 <form action="direcciones_tipos.php" method="post" enctype="multipart/form-data">
   <div class="row">
-    <div class="large-12 columns">
+    <div class="large-9 columns">
       <label class="">Campañia</label>
+    </div>
+    <div class="large-3 columns text-right">
+      <a href="https://www.google.es/maps/" target="_blank">Google Maps</a> |
+      <a href="../ubigeo/direcciones.php" target="_blank">Direcciones</a>
     </div>
   </div>
   <div class="row">
