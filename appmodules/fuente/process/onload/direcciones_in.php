@@ -24,7 +24,7 @@ function imprimir_tabla($data) {
     global $onLoad;
     echo '<table>';
     echo '<tr>';
-    echo '<th colspan="2">Direccion</th><th>Ubigeo 1</th><th>Ubigeo 2</th><th>Ubigeo 3</th><th width="100"></th><th>Estado</th>';
+    echo '<th colspan="2">Direccion</th><th>Municipio</th><th>Provincia</th><th>Autonoma</th><th width="100"></th><th>Estado</th>';
     echo '</tr>';
     foreach ($data as $row) {
         $row['estado_str'] = '';

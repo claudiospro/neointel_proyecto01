@@ -18,13 +18,13 @@ BEGIN
     FROM fuente_a
     JOIN ubigeo_sinonimo ON LOWER(ubigeo_sinonimo.nombre) = LOWER(fuente_a.ubigeo_localidad_nombre)
          AND ubigeo_sinonimo.nivel=4
-    WHERE campania_id = in_compania_id AND ubigeo_localidad_id = 0
+    WHERE campania_id = in_compania_id AND ubigeo_localidad_id IS NULL
     UNION
     SELECT DISTINCT fuente_b.ubigeo_ciudad_nombre nombre, ubigeo_sinonimo.ubigeo_id
     FROM fuente_b
     JOIN ubigeo_sinonimo ON LOWER(ubigeo_sinonimo.nombre) = LOWER(fuente_b.ubigeo_ciudad_nombre)
          AND ubigeo_sinonimo.nivel=4
-    WHERE campania_id = in_compania_id AND ubigeo_ciudad_id = 0
+    WHERE campania_id = in_compania_id AND ubigeo_ciudad_id IS NULL
   ) unido
   ;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;

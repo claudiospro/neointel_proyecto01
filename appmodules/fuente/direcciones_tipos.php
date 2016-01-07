@@ -60,7 +60,7 @@ include "../autentificacion/menu.php";
 
 <div class="row">
   <div class="large-12 columns">
-    <div class="callout secondary">
+    <div class="callout secondary tablita">
       <?php
       $indexar = false;
       if ($in['data']) {

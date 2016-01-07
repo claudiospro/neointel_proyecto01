@@ -63,8 +63,8 @@ include "../autentificacion/menu.php";
       <div class="tabs-panel is-active" id="panel1">
         <?php if(isset($in['campania_id'])): ?>
           <a href="./process/link/excel/fuente_unir_datos_a_y_b_excel_link.php?campania_id=<?php echo $in['campania_id'] ?>" target="_blank">Excel</a>
-          <?php endif ?>
-        <div class="callout secondary">
+        <?php endif ?>
+        <div class="callout secondary tablita">
           <?php
           if ($in['a_y_b']) {
               // Html::printr($in['a_y_b']);
@@ -74,7 +74,7 @@ include "../autentificacion/menu.php";
         </div>
       </div>
       <div class="tabs-panel" id="panel2">
-        <div class="callout secondary">
+        <div class="callout secondary tablita">
           <?php
           if ($in['a_menos_b']) {
               // Html::printr($in['a_menos_b']);
