@@ -46,9 +46,8 @@ function imprimir_tabla($data) {
 
         echo '<td>' . 
             '<span>' . $row['direccion_tipo'] . '</span> ' . 
-            '<span>' . strtolower(($row['nombre'])) . '</span>, ' . 
-            '<span>' . utf8_encode($row['ubigeo_nombre']) . '</span>, ' . 
-            'España' . 
+            '<span>' . ucfirst(strtolower(($row['nombre']))) . '</span> ' . 
+            '<span>' . utf8_encode($row['ubigeo_nombre']) . '</span>' . 
             '</td>';
         echo '<td>' . $row['estado_str'] . '</td>';        
         echo '</tr>';
