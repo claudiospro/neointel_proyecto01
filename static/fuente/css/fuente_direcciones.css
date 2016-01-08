@@ -1,3 +1,15 @@
 table td, table th {
     border: 1px solid;
 }
+tr.item_tipo_1 {
+    background-color: #bfffe0;
+}
+tr.item_tipo_2 {
+    background-color: #FBDED7;
+}
+tr.item_tipo_1:nth-child(2n) {
+    background-color: #9cdebe;
+}
+tr.item_tipo_2:nth-child(2n) {
+    background-color: #FBDED7;
+}

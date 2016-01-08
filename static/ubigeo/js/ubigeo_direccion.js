@@ -153,7 +153,7 @@ $(document).ready(function() {
             // "scrollY": false,
             // "scrollX": true,
             
-            "pageLength" : 20,
+            "pageLength" : 50,
             "order"      : [ 1, 'asc' ],
             "aoColumnDefs": [ { 'bSortable': false, 'aTargets': [ 4 ] } ],
             "ajax": {

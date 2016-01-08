@@ -7,11 +7,11 @@ include "../../../model/classes/ModeloSave.php";
 
 $save = new ModeloSave();
 // -------------------------------------------------------- INPUT
-$in['id']      = Utilidades::clear_input_id($_POST['id']);
-$in['nombre']  = Utilidades::clear_input_text($_POST['nombre']);
-$in['tipo_id']      = Utilidades::clear_input_id($_POST['tipo_id']);
-$in['ubigeo_id']      = Utilidades::clear_input_id($_POST['ubigeo_id']);
-$in['date']    = date('Y-m-d H:i:s');
+$in['id'] = Utilidades::clear_input_id($_POST['id']);
+$in['nombre'] = Utilidades::clear_input_text(Utilidades::sanear_string($_POST['nombre']));
+$in['tipo_id'] = Utilidades::clear_input_id($_POST['tipo_id']);
+$in['ubigeo_id'] = Utilidades::clear_input_id($_POST['ubigeo_id']);
+$in['date'] = date('Y-m-d H:i:s');
 $in['user_id'] = 1;
 // -------------------------------------------------------- Data
 $ou = $save->setDireccion($in);

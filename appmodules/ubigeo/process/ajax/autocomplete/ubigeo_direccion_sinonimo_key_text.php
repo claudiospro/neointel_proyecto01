@@ -8,7 +8,8 @@ include "../../../model/classes/ModeloAutoComplete.php";
 $auto = new ModeloAutoComplete();
 // -------------------------------------------------------- INPUT
 $in = null;
-$in['nombre'] = Utilidades::clear_input_text($_REQUEST['term']); 
+$in['nombre'] = Utilidades::clear_input_text(Utilidades::sanear_string($_REQUEST['term']));
+
 // -------------------------------------------------------- Data
 $ou = $auto->direccionTipoSinonimos($in);
 
